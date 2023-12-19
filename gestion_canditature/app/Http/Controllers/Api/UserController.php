@@ -43,13 +43,18 @@ class UserController extends Controller
                           return response()->json($e);
         }
         public function  index(){
-             $user= auth()->user();      
-             if ($user->roles === 'admin') {
-                 return response()->json(["message"=>"vous êtes connecter en tant que Administrateur","data"=>$user]); 
-             }else {
-                return response()->json(["message"=>"vous êtes connecter en tant que candidat","data"=>$user]); 
-             }
+          
+            $formation = Formations::all();
+          
+            return response()->json([
+                "status" => 1,
+                "message" => "voici la listes des  formations",
+                "data" => $formation
+            ]);
+          
+           
 }
+
 
 
   }

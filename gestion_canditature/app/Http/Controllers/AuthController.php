@@ -5,9 +5,7 @@ use Illuminate\Http\Request;
 use OpenApi\Annotations as OA;
 use App\Http\Requests\LoginUser;
 
-/**
- * @OA\Info(title="Authentification avec JWT", version="0.1")
- */
+
 class AuthController extends Controller
 {
   /**
@@ -45,7 +43,12 @@ class AuthController extends Controller
        
         return $this->respondWithToken($token);
 
-        
+        $user= auth()->user();      
+        if ($user->roles === 'admin') {
+            return response()->json(["message"=>"vous êtes connecter en tant que Administrateur","data"=>$user]); 
+        }else {
+            return response()->json(["message"=>"vous êtes connecter en tant que candidat","data"=>$user]); 
+        }
     }
 
     /**

@@ -6,6 +6,7 @@ use Exception;
 use App\Models\Formations;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EditeFormations;
 use App\Http\Requests\FormationCreate;
 
 class FormationsController extends Controller
@@ -29,4 +30,39 @@ class FormationsController extends Controller
                 return response()->json($e);
                               }
          }
+
+
+         public function update(EditeFormations  $request, Formations $formation) {
+             try{
+                 $formation->libeller=$request->libeller;
+                 $formation->description=$request->description;
+                 $formation->durer_formations=$request->durer_formations;
+                 $formation->save();
+                 return response()->json(
+                     [
+                         'status_code'=>200,
+                         'status_massage'=> ' formations modifier  avec succéss',
+                         'data'=>$formation
+                        ]);
+                        // dd($formation;
+               }catch(Exception $e){
+                          return response()->json($e);
+            }
+              }
+
+
+              public function destroy(Formations $formation) {
+                try {
+                    if ($formation->is_delete === 0) {
+                        $formation->is_delete = 1;
+                        $formation->save();
+                    }
+                    $formation = Formations::where('is_delete', 0)->get();
+                    return response()->json($formation);
+                } catch (Exception $e) {
+                    return response()->json($e);
+                }
+            }
+            
+         
 }
