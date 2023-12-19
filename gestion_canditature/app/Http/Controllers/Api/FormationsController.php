@@ -8,9 +8,21 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EditeFormations;
 use App\Http\Requests\FormationCreate;
-
+use OpenApi\Annotations as OA;
 class FormationsController extends Controller
 {
+
+            public function home(){
+                $formation = Formations::where('is_delete', 0)->get();
+                return response()->json([
+                    "status" => 1,
+                    "message" => "voici la listes des  formations créer",
+                    "data" => $formation
+                ]);
+              
+            }
+
+
     public function store(FormationCreate  $request){
         try {
             $formation=new Formations();

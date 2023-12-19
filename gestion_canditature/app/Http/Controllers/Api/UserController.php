@@ -9,6 +9,7 @@ use App\Http\Requests\RegisterUser;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\FormationCreate;
 use App\Models\Formations;
+use OpenApi\Annotations as OA;
 
 /**
  * @OA\Info(title="enpoind des utilisateur", version="0.1")

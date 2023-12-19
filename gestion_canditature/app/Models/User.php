@@ -24,8 +24,11 @@ class User extends Authenticatable implements JWTSubject
         'password',
     ];
 
-
-
+    public function candidat()
+    {
+        return $this->hasMany(Formations::class);
+    }
+ 
     public function isAdmin()
 {
     return $this->roles === 'admin'; 

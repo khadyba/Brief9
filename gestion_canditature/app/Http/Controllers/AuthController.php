@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use OpenApi\Annotations as OA;
 use App\Http\Requests\LoginUser;
+use OpenApi\Annotations as OA;
 
-
+/**
+ * @OA\Info(title="EndPoint de Auth ", version="0.1")
+ */
 class AuthController extends Controller
 {
   /**
@@ -39,10 +41,7 @@ class AuthController extends Controller
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
-        
-       
         return $this->respondWithToken($token);
-
         $user= auth()->user();      
         if ($user->roles === 'admin') {
             return response()->json(["message"=>"vous êtes connecter en tant que Administrateur","data"=>$user]); 

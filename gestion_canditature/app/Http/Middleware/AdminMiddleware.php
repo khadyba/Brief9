@@ -13,16 +13,18 @@ class AdminMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
-{
-    $user = $request->user(); 
+ // CheckAdminRole.php
 
-    if ($user->isAdmin()) {
-        return  'dashbordAdmin'; 
-    } else {
-        return redirect()->route('liste_formations'); 
+public function handle($request, Closure $next)
+{
+    $user= $request->user();
+
+    if ($user->roles === 'admin') {
+        return $next($request);
     }
+    return response()->json(['message' => 'Vous n\'êtes pas autorisé à effectuer cette action.'], 403);
 }
+
 
 }
 

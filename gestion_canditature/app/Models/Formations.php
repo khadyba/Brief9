@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Formations extends Model
 {
     use HasFactory;
+    public function candidat()
+    {
+        return $this->hasMany(User::class);
+    }
 }
