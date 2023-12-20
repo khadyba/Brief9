@@ -4,7 +4,663 @@
         "title": "endPoind ",
         "version": "1.0"
     },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        }
+    },
+    "security": [
+        {
+            "bearerAuth": []
+        }
+    ],
     "paths": {
+        "/api/formation/candidat/{formationId}": {
+            "post": {
+                "tags": [
+                    "Formations"
+                ],
+                "summary": "Créer une candidature",
+                "description": "Crée une candidature pour une formation donnée.",
+                "operationId": "21b87c199871eb1c6ea68f996ec17fb7",
+                "parameters": [
+                    {
+                        "name": "formationId",
+                        "in": "path",
+                        "description": "ID de la formation pour laquelle la candidature est créée",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Candidature créée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "status_message": {
+                                            "type": "string",
+                                            "example": "Votre Candidature est prise en compte"
+                                        },
+                                        "user": {
+                                            "$ref": "/components/schemas/candidatPostuler"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Utilisateur ou formation non trouvé",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "status_message": {
+                                            "type": "string",
+                                            "example": "Utilisateur non trouvé ou Formation n'existe pas"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erreur interne du serveur"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/formations/candidatureList": {
+            "get": {
+                "tags": [
+                    "Formations"
+                ],
+                "summary": "Liste des candidatures avec informations",
+                "description": "Récupère la liste de toutes les candidatures avec des informations détaillées sur la formation et l'utilisateur associé.",
+                "operationId": "2919d7fab60de050185b70742b60d1a0",
+                "responses": {
+                    "200": {
+                        "description": "Liste des candidatures récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "candidatures": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "formation": {
+                                                        "$ref": "/components/schemas/Formations"
+                                                    },
+                                                    "user": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "nom": {
+                                                                "type": "string",
+                                                                "example": "John"
+                                                            },
+                                                            "prenom": {
+                                                                "type": "string",
+                                                                "example": "Doe"
+                                                            },
+                                                            "email": {
+                                                                "type": "string",
+                                                                "example": "john@example.com"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erreur interne du serveur"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/candidatureList/{candidatPost}": {
+            "post": {
+                "tags": [
+                    "Candidatures"
+                ],
+                "summary": "Modifier le statut d'une candidature",
+                "description": "Modifie le statut d'une candidature de 'Refuser' à 'Accepter'.",
+                "operationId": "3f5bff4ce82d13a40cac47a5ab812d52",
+                "parameters": [
+                    {
+                        "name": "candidatPost",
+                        "in": "path",
+                        "description": "ID de la candidature à modifier",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Statut de la candidature modifié avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Statut de la candidature modifié avec succès"
+                                        },
+                                        "candidature": {
+                                            "$ref": "/components/schemas/candidatPostuler"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Impossible de modifier le statut de la candidature",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 400
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Impossible de modifier le statut de la candidature"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Statut déjà accepté ou candidature non trouvée",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Statut déjà accepté ou candidature non trouvée"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erreur interne du serveur"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/candidature/Accepter": {
+            "get": {
+                "tags": [
+                    "Candidatures"
+                ],
+                "summary": "Liste des candidatures acceptées",
+                "description": "Récupère la liste de toutes les candidatures avec le statut 'Accepter'.",
+                "operationId": "363aa6ac913b0238848ec1694189ac4a",
+                "responses": {
+                    "200": {
+                        "description": "Liste des candidatures acceptées récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "listes des candidature Accepter"
+                                        },
+                                        "candidatures": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "/components/schemas/candidatPostuler"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erreur interne du serveur"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/candidature/Refuser": {
+            "get": {
+                "tags": [
+                    "Candidatures"
+                ],
+                "summary": "Liste des candidatures refusées",
+                "description": "Récupère la liste de toutes les candidatures avec le statut 'Refuser'.",
+                "operationId": "98ccc140380cbeae8765a6442b81f3c3",
+                "responses": {
+                    "200": {
+                        "description": "Liste des candidatures refusées récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Liste des candidature Refuser"
+                                        },
+                                        "candidatures": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "/components/schemas/candidatPostuler"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erreur interne du serveur"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/formations": {
+            "get": {
+                "tags": [
+                    "Formations"
+                ],
+                "summary": "Liste des formations",
+                "description": "Récupère la liste de toutes les formations disponibles.",
+                "operationId": "0ee9ae91d0463f181308a76c8ff89ac6",
+                "responses": {
+                    "200": {
+                        "description": "Liste des formations récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Voici la liste des formations"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "/components/schemas/Formations"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/formations/store": {
+            "post": {
+                "tags": [
+                    "Formations"
+                ],
+                "summary": "Créer une nouvelle formation",
+                "description": "Permet de créer une nouvelle formation.",
+                "operationId": "ce924756ce4481d723b589abc508a221",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "libeller",
+                                    "description",
+                                    "durer_formations"
+                                ],
+                                "properties": {
+                                    "libeller": {
+                                        "type": "string",
+                                        "example": "Nom de la formation"
+                                    },
+                                    "description": {
+                                        "type": "LongText",
+                                        "example": "Description de la formation"
+                                    },
+                                    "durer_formations": {
+                                        "type": "string",
+                                        "example": "Durée de la formation"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Formation créée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "status_message": {
+                                            "type": "string",
+                                            "example": "Formations créée avec succès"
+                                        },
+                                        "data": {
+                                            "$ref": "/components/schemas/Formations"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erreur interne du serveur"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/formations/edit/{formation}": {
+            "put": {
+                "tags": [
+                    "Formations"
+                ],
+                "summary": "Mettre à jour une formation existante",
+                "description": "Permet de mettre à jour une formation existante.",
+                "operationId": "da2593fefcbc55f516ef654e606570e7",
+                "parameters": [
+                    {
+                        "name": "formation",
+                        "in": "path",
+                        "description": "ID de la formation à mettre à jour",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "libeller",
+                                    "description",
+                                    "durer_formations"
+                                ],
+                                "properties": {
+                                    "libeller": {
+                                        "type": "string",
+                                        "example": "Nouveau nom de la formation"
+                                    },
+                                    "description": {
+                                        "type": "Longtext",
+                                        "example": "Nouvelle description de la formation"
+                                    },
+                                    "durer_formations": {
+                                        "type": "string",
+                                        "example": "Nouvelle durée de la formation"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Formation modifiée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status_code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "status_message": {
+                                            "type": "string",
+                                            "example": "Formations modifiée avec succès"
+                                        },
+                                        "data": {
+                                            "$ref": "/components/schemas/Formations"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erreur interne du serveur"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/formations/destroy/{formation}": {
+            "delete": {
+                "tags": [
+                    "Formations"
+                ],
+                "summary": "Supprimer une formation",
+                "description": "Supprime une formation de manière logique ( delete).",
+                "operationId": "0cbaa0c1dc62bf9db95eba370015a767",
+                "parameters": [
+                    {
+                        "name": "formation",
+                        "in": "path",
+                        "description": "ID de la formation à supprimer",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Formation supprimée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "/components/schemas/Formations"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Erreur interne du serveur",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Erreur interne du serveur"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/auth/register": {
             "post": {
                 "tags": [
@@ -102,6 +758,123 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Erreur Interne du Serveur"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/dashbordAdmin": {
+            "get": {
+                "tags": [
+                    "Formations"
+                ],
+                "summary": "Liste des formations",
+                "description": "Récupère la liste de toutes les formations disponibles.",
+                "operationId": "3faec493d353e5a56aef5cefc1e7b805",
+                "responses": {
+                    "200": {
+                        "description": "Liste des formations récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Voici la liste des formations"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "/components/schemas/Formations"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Connexion de l'utilisateur",
+                "description": "Permet à l'utilisateur de se connecter et de récupérer le token d'authentification.",
+                "operationId": "8dcb70df1020986038d098cc08d05dae",
+                "requestBody": {
+                    "description": "Informations de connexion de l'utilisateur",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "utilisateur@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "motdepasse"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Utilisateur connecté avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "Bearer <token>"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "Bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer",
+                                            "example": 3600
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Non autorisé - Erreur d'authentification",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
                                         }
                                     },
                                     "type": "object"

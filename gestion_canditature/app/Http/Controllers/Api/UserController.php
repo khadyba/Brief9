@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Api;
-
 use Exception;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -10,7 +8,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\FormationCreate;
 use App\Models\Formations;
 use OpenApi\Annotations as OA;
-
 
 class UserController extends Controller
 
@@ -77,10 +74,32 @@ class UserController extends Controller
         }
                           return response()->json($e);
         }
-
-
+      /**
+     * Récupérer la liste des formations.
+     *
+     * @OA\Get(
+     *     path="/api/dashbordAdmin",
+     *     tags={"Formations"},
+     *     summary="Liste des formations",
+     *     description="Récupère la liste de toutes les formations disponibles.",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Liste des formations récupérée avec succès",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="integer", example=1),
+     *             @OA\Property(property="message", type="string", example="Voici la liste des formations"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     ref="/components/schemas/Formations"
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     */
         public function  index(){
-          
             $formation = Formations::all();
           
             return response()->json([
@@ -89,7 +108,4 @@ class UserController extends Controller
                 "data" => $formation
             ]);
           }
-
-
-
   }

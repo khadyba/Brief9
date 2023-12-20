@@ -25,6 +25,41 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
+/**
+ * Connecter un utilisateur.
+ *
+ * @OA\Post(
+ *     path="/api/auth/login",
+ *     tags={"Authentification"},
+ *     summary="Connexion de l'utilisateur",
+ *     description="Permet à l'utilisateur de se connecter et de récupérer le token d'authentification.",
+ *     @OA\RequestBody(
+ *         required=true,
+ *         description="Informations de connexion de l'utilisateur",
+ *         @OA\JsonContent(
+ *             required={"email", "password"},
+ *             @OA\Property(property="email", type="string", format="email", example="utilisateur@example.com"),
+ *             @OA\Property(property="password", type="string", format="password", example="motdepasse")
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=200,
+ *         description="Utilisateur connecté avec succès",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="access_token", type="string", example="Bearer <token>"),
+ *             @OA\Property(property="token_type", type="string", example="Bearer"),
+ *             @OA\Property(property="expires_in", type="integer", example=3600)
+ *         )
+ *     ),
+ *     @OA\Response(
+ *         response=401,
+ *         description="Non autorisé - Erreur d'authentification",
+ *         @OA\JsonContent(
+ *             @OA\Property(property="error", type="string", example="Unauthorized")
+ *         )
+ *     )
+ * )
+ */
 
     public function login(LoginUser $credentials)
     {
@@ -41,6 +76,7 @@ class AuthController extends Controller
             return response()->json(["message"=>"vous êtes connecter en tant que candidat","data"=>$user]); 
         }
     }
+
 
     /**
      * Get the authenticated User.
@@ -70,9 +106,6 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-
-
-    
     public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
@@ -86,8 +119,6 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-     
-    
     protected function respondWithToken($token)
     {
         return response()->json([
