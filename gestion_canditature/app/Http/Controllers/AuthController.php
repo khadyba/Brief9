@@ -5,9 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LoginUser;
 use OpenApi\Annotations as OA;
 
-/**
- * @OA\Info(title="EndPoint de Auth ", version="0.1")
- */
+
 class AuthController extends Controller
 {
   /**
@@ -27,13 +25,7 @@ class AuthController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
-         /**
- * @OA\Post(
- *     path="/api/auth/login",
- *     sumary="ici on va connecter l'utilisateur a l'aide de jwt avec les token"
- *     @OA\Response(response="200", description="L'utilisateur est connecter")
- * )
- */
+
     public function login(LoginUser $credentials)
     {
         $credentials = request(['email', 'password']);
@@ -65,13 +57,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-/*
-     * @OA\Post(
-     *     path="/api/auth/logout",
-     *     sumary="ici on va deconnecter l'utilisateur"
-     *     @OA\Response(response="200", description="L'utilisateur est deconnecter")
-     * )
-     */
+
     public function logout()
     {
         auth()->logout();
@@ -86,13 +72,7 @@ class AuthController extends Controller
      */
 
 
-     /*
-     * @OA\Post(
-     *     path="/api/auth/refresh",
-     *     sumary="rafraichir le token"
-     *     @OA\Response(response="200", description="success")
-     * )
-     */
+    
     public function refresh()
     {
         return $this->respondWithToken(auth()->refresh());
@@ -107,13 +87,7 @@ class AuthController extends Controller
      */
 
      
-     /*
-     * @OA\Post(
-     *     path="/api/auth/me",
-     *     
-     *     @OA\Response(response="200", description="success")
-     * )
-     */
+    
     protected function respondWithToken($token)
     {
         return response()->json([

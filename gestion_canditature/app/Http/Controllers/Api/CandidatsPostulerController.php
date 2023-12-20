@@ -3,14 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use Exception;
+use App\Models\User;
+use App\Models\Formations;
 use Illuminate\Http\Request;
+use OpenApi\Annotations as OA;
 use App\Models\candidatPostuler;
 use App\Http\Controllers\Controller;
+use App\Notifications\CandidatureAccepter;
+use Illuminate\Notifications\Notification;
 use App\Http\Requests\CandidatsPostulerRequest;
-use App\Models\Formations;
-use OpenApi\Annotations as OA;
-
-
+use App\Notifications\CandidatureReçu;
 
 class CandidatsPostulerController extends Controller
 {
@@ -34,12 +36,21 @@ class CandidatsPostulerController extends Controller
             $candidater = new candidatPostuler();
             $candidater->formations_id = $formation->id;
             $candidater->user_id = $user->id;
-            $candidater->save();
-            return response()->json([
-                'status_code' => 200,
-                'status_message' => 'Votre Candidature est prise en compte',
-                'user' => $candidater
-            ]);
+            if ($candidater->save()) {
+                $candidat = User::find($candidater['user_id']);
+                $candidat->notify(new CandidatureReçu($candidater->email)); 
+                return response()->json([
+                    'status_code' => 200,
+                    'status_message' => 'Votre Candidature est prise en compte',
+                    'user' => $candidater
+                ]);
+            }else {
+                return response()->json([
+                    'status_code' => 200,
+                    'status_message' => 'Le mail n\'a pas été envoyer',
+                    'user' => $candidater
+                ]);
+            }
         } catch (Exception $e) {
             return response()->json($e);
         }
@@ -57,34 +68,38 @@ class CandidatsPostulerController extends Controller
         }
     }
     
-
-    
     public function edit(candidatPostuler $candidatPost){
-        try{
-            
-            // Vérification et mise à jour du statut
-            // dd($candidatPost);
-            if ($candidatPost->statut ==='Refuser') {
-                $candidatPost->statut ='Accepter';
-                $candidatPost->save();
-                return response()->json([
-                    'status_code' => 200,
-                    'message' => 'Statut de la candidature modifié avec succès',
-                    'candidature' => $candidatPost
-                ]);
-            } else {
+      
+            try {
+                if ($candidatPost->statut === 'Refuser') {
+                    $candidatPost->statut = 'Accepter';
+                    if ($candidatPost->save()) {
+                        $candidat = User::find($candidatPost['user_id']);
+                        $candidat->notify(new CandidatureAccepter($candidat->email)); 
+                        dd($candidat->email);
+
+                        return response()->json([
+                            'status_code' => 200,
+                            'message' => 'Statut de la candidature modifié avec succès',
+                            'candidature' => $candidatPost
+                        ]);
+                    } else {
+                    return response()->json([
+                        'status_code' => 400,
+                        'message' => 'Impossible de modifier le statut de la candidature'
+                    ]);
+                }
+            }else {
                 return response()->json([
                     'status_code' => 400,
-                    'message' => 'Impossible de modifier le statut de la candidature'
+                    'message' => 'statut dejat accepter'
                 ]);
             }
-        } catch(Exception $e) {
-            return response()->json($e);
+            }catch(Exception $e) {
+                return response()->json($e);
+            }
+            
         }
-    }
-    
-
-
         public function candidatureAccepter(){
             try {
                 //  on Récupére de toutes les candidatures avec les informations nécessaires
@@ -98,9 +113,6 @@ class CandidatsPostulerController extends Controller
                 return response()->json($e);
             }
         }
-
-
-
         public function candidatureRefuser(){
             try {
                 //  on Récupére de toutes les candidatures avec les informations nécessaires
