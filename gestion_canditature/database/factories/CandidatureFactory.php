@@ -24,7 +24,6 @@ class CandidatureFactory extends Factory
             'user_id' => User::factory()->create()->id,
             'formation_id' => User::factory()->create()->id,
             'status' => 'Accepter',
-            
         ];
     }
 }

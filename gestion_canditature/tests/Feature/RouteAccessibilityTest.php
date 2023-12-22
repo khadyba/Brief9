@@ -81,7 +81,6 @@ class RouteAccessibilityTest extends TestCase
                 $this->actingAs($admin);
                 $response = $this->get('/api/formations/candidatureList');
                 $response->assertStatus(200); 
-        
                 $response->assertJsonStructure([
                     'status_code',
                     'candidatures' => [

@@ -6,14 +6,16 @@ use App\Models\User;
 
 class CandidatValidationTest extends TestCase
 {
+    // fonction pour validation de l'email 
     public function testEmailUnique()
     {
+        // ici je simule une authentification avex un adreese email
         User::factory()->create(['email' => 'test@example.com']);
 
         $data = [
             'email' => 'test@example.com', 
         ];
-
+// ici on  essay encore de enregistrer le meme email
         $candidat = User::factory()->make($data);
         $this->assertFalse($candidat->save()); 
         $this->assertNotNull($candidat->getError('email')); 

@@ -11,7 +11,7 @@ class CandidatsPostulerControllerTest extends TestCase
     {
         $user = User::factory()->create();
         $this->actingAs($user);
-        $formation = User::factory()->create();
+        // $formation = User::factory()->create();
         $response = $this->post("/api/formation/candidat/1");
         $response->assertStatus(200); 
     }
