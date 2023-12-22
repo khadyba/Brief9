@@ -18,11 +18,12 @@ use App\Http\Controllers\Api\CandidatsPostulerController;
 */
 //  les routes de l'administrateur
 Route::middleware('auth')->group(function(){ 
+    Route::get('/candidats',[UserController::class, 'candidats'])->middleware('isAdmin');
     Route::get('/dashbordAdmin',[UserController::class, 'index']);
     Route::post('/formations/store',[FormationsController::class, 'store'])->middleware('isAdmin');
     Route::put('/formations/edit/{formation}',[FormationsController::class,'update'])->middleware('isAdmin');
     Route::delete('/formations/destroy/{formation}',[FormationsController::class,'destroy'])->middleware('isAdmin');
-     // route pour la listes des candidatures
+    // route pour la listes des candidatures
     Route::get('/formations/candidatureList',[CandidatsPostulerController::class,'candidatureList'])->middleware('isAdmin');
 // rout pour accepter ou refuser un candidature
     Route::post('/candidatureList/{candidatPost}',[CandidatsPostulerController::class,'edit'])->middleware('isAdmin');
@@ -45,8 +46,8 @@ Route::group([
     // route pour enregistrer un utilisateur
     Route::post('register', [UserController::class,'register']);
 // rout pour connecter un utilisateur
-    Route::post('login', [AuthController::class,'login']);
-    Route::post('logout', [AuthController::class,'logout']);
-    Route::post('refresh', [AuthController::class,'refresh']);
-    Route::post('me', [AuthController::class,'me']);
+Route::post('login', [AuthController::class,'login']);
+Route::post('logout', [AuthController::class,'logout']);
+Route::post('refresh', [AuthController::class,'refresh']);
+Route::post('me', [AuthController::class,'me']);
 });

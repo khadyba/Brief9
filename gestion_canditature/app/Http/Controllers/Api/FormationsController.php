@@ -39,7 +39,7 @@ class FormationsController extends Controller
                 $formation = Formations::where('is_delete', 0)->get();
                 return response()->json([
                     "status" => 1,
-                    "message" => "voici la listes des  formations créer",
+                    "message" => "Listes des  formations ",
                     "data" => $formation
                 ]);
             }
@@ -88,7 +88,6 @@ class FormationsController extends Controller
             $formation->libeller= $request->libeller;
             $formation->description= $request->description;
             $formation-> durer_formations= $request-> durer_formations;
-            // $formation->user_id = auth()->user()->id;
             $formation->save();
             return response()->json(
                [

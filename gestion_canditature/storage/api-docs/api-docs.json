@@ -806,6 +806,44 @@
                 }
             }
         },
+        "/api/candidats": {
+            "get": {
+                "tags": [
+                    "Candidats"
+                ],
+                "summary": "Liste des candidate inscrit",
+                "description": "Récupère la liste de toutes les candidats",
+                "operationId": "81baf27f9029d264e7957ecb0582cff6",
+                "responses": {
+                    "200": {
+                        "description": "Liste des candidats récupérée avec succès",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "status": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Voici la liste des candidats"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "/components/schemas/Formations"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/auth/login": {
             "post": {
                 "tags": [

@@ -104,8 +104,44 @@ class UserController extends Controller
           
             return response()->json([
                 "status" => 1,
-                "message" => "voici la listes des  formations",
+                "message" => "la listes des  formations  Créer",
                 "data" => $formation
             ]);
           }
+
+                /**
+     * Récupérer la liste des formations.
+     *
+     * @OA\Get(
+     *     path="/api/candidats",
+     *     tags={"Candidats"},
+     *     summary="Liste des candidate inscrit",
+     *     description="Récupère la liste de toutes les candidats",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Liste des candidats récupérée avec succès",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="status", type="integer", example=1),
+     *             @OA\Property(property="message", type="string", example="Voici la liste des candidats"),
+     *             @OA\Property(
+     *                 property="data",
+     *                 type="array",
+     *                 @OA\Items(
+     *                     ref="/components/schemas/Formations"
+     *                 )
+     *             )
+     *         )
+     *     )
+     * )
+     */
+            public function candidats(){
+              $candidats= User::all();
+              return response()->json([
+                "status" => 1,
+                "message" => "la listes des  candidats inscrit ",
+                "data" => $candidats
+              ]);
+            }
+
+
   }

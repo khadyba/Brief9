@@ -27,7 +27,7 @@ class RegisterUser extends FormRequest
                     'nom'=>'required',
                     'prenom'=>'required',
                     'email'=>'required|unique:users,email',
-                    'password'=>'required'
+                    'password'=>'required|max:8'
         ];
     }
 
@@ -50,7 +50,7 @@ public function messages()
                  'prenom.required' =>'Veuillez renseignée votre prenom',
                  'email.required' =>'une adresse  email doit etre fournie',
                  'email.unique' =>'l\adresse email existe déjat',
-                 'password.required' =>'Le mot de passe est requis',
+                 'password.required' =>'Le mot de passe est requis et doit avoir au minimum 7 caractères',
              ];
 }
 }

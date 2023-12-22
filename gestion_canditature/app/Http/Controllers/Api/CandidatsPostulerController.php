@@ -196,7 +196,7 @@ class CandidatsPostulerController extends Controller
                         $candidat->notify(new CandidatureAccepter($candidat->email));
                         return response()->json([
                             'status_code' => 200,
-                            'message' => 'Statut de la candidature modifié avec succès',
+                            'message' => ' La candidature  à été Accepter avec succès',
                             'candidature' => $candidatPost
                         ]);
                     } else {
